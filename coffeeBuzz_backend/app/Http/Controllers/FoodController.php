@@ -3,32 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Food;
-
 use Illuminate\Http\Request;
 
 class FoodController extends Controller
 {
-    //not tested
-
-    protected $food;
-    public function __construct(Food $food){
-        $this->middleware('auth:api', ['except' => ['index']]);
-        $this->food = $food;
+    public function showAllFoods() {
+        return Food::all();
     }
 
-    public function add(Request $request){
-        $newFood = [
-            'name' => $request->name,
-            'drink_type' => $request->qty
-        ];
+    public function showFoodById($id) {
+        return Food::find($id);
+    }
 
-        if($newFood!=null){
-            $new = $this->books->create($newFood);
-            $array = Array();
-            $array['data'] = $new;
-            return response()->json($array,200);
-        } else {
-            return response()->json(['error' => 'food not added'], 404);
-        }
+    public function deleteFood($id) {
+        Food::where('id', $id)->delete();
+    }
+
+    public function addFood(Request $request) {
+        $cart = new Food;
+        $cart->name = $request->name;
+        $cart->qty = $request->qty;
+        $cart->save();
+    }
+
+    public function updateFood(Request $request, $id) {
+        $cart = Food::find($id);
+        $cart->name = $request->input('name');
+        $cart->qty = $request->input('qty');
+        $cart->save();
     }
 }

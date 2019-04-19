@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Order_list extends Model
+class OrderList extends Model
 {
     public $timestamps = false;
     protected $table = 'order_lists';

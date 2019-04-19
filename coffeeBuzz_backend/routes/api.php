@@ -26,8 +26,8 @@ Route::group([
 });
 
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
 
-Route::post('food/add', 'FoodController@add');
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
