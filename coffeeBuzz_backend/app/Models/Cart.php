@@ -13,4 +13,6 @@ class Cart extends Model
     public function users(){
         return $this->belongsTo('App\Models\User', 'id');
     }
+
+    protected $primaryKey = 'id';
 }

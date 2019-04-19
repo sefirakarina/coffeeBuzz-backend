@@ -14,10 +14,15 @@ class CreateOrderListsTable extends Migration
     public function up()
     {
         Schema::create('order_lists', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->integer('cart_id')->unsigned();
+            $table->integer('item_id')->unsigned();
+            $table->integer('qty');
+        });
+
+        Schema::table('order_lists', function (Blueprint $table) {
             $table->foreign('cart_id')->references('id')->on('carts');
             $table->foreign('item_id')->references('id')->on('items');
-            $table->integer('qty');
         });
     }
 

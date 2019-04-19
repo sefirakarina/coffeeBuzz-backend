@@ -14,9 +14,13 @@ class CreateOrderedItemsTable extends Migration
     public function up()
     {
         Schema::create('ordered_items', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreign('cart_id')->references('id')->on('carts');
+            $table->increments('id');
+            $table->integer('cart_id')->unsigned();
             $table->timestamp('created_at');
+        });
+
+        Schema::table('ordered_items', function (Blueprint $table) {
+            $table->foreign('cart_id')->references('id')->on('carts');
         });
     }
 

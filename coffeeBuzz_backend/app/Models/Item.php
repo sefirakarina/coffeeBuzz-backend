@@ -17,4 +17,6 @@ class Item extends Model
     public function drinks(){
         return $this->hasMany('App\Models\Food', 'id');
     }
+
+    protected $primaryKey = 'id';
 }
