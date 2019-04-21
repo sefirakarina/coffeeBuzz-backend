@@ -8,27 +8,73 @@ use Illuminate\Http\Request;
 
 class OrderedItemController extends Controller
 {
-    public function showAllOrderedItems() {
-        return OrderedItem::all();
+    protected $ordered_item;
+
+    public function __construct(OrderedItem $ordered_item)
+    {
+        $this->middleware('auth:api');
+        $this->ordered_item = $ordered_item;
     }
 
-    public function showOrderedItemById($id) {
-        return OrderedItem::find($id);
+    public function index()
+    {
+        $ordered_item = OrderedItem::all();
+        $array = Array();
+        $array['data'] = $ordered_item;
+        if (count($ordered_item) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Ordered items not found'], 404);
+        }
     }
 
-    public function deleteOrderedItem($id) {
-        OrderedItem::where('id', $id)->delete();
+    public function show($id)
+    {
+        $ordered_item = OrderedItem::find($id);
+        $array = Array();
+        $array['data'] = $ordered_item;
+        if (count($ordered_item) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Ordered items not found'], 404);
+        }
     }
 
-    public function addOrderedItem(Request $request) {
-        $cart = new OrderedItem;
-        $cart->cart_id = $request->cart_id;
-        $cart->save();
+    public function destroy($id)
+    {
+        $ordered_item = OrderedItem::where('id', $id)->delete();
+        if ($ordered_item != null) {
+            return response()->json($ordered_item, 200);
+        } else {
+            return response()->json(['error' => 'Ordered item cannot be deleted'], 404);
+        }
     }
 
-    public function updateOrderedItem(Request $request, $id) {
-        $cart = OrderedItem::find($id);
-        $cart->cart_id = $request->input('cart_id');
-        $cart->save();
+    public function store(Request $request)
+    {
+        $newOrderedItem = [
+            'cart_id' => $request->cart_id,
+        ];
+
+        if ($newOrderedItem != null) {
+            $new = $this->ordered_item->create($newOrderedItem);
+            $array = Array();
+            $array['data'] = $new;
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Ordered item not added'], 404);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $ordered_item = OrderedItem::where('id', $request->id)->update([
+            'cart_id' => $request->cart_id,
+        ]);
+        if ($ordered_item != null) {
+            return response()->json($ordered_item, 200);
+        } else {
+            return response()->json(['error' => 'Ordered item not updated'], 404);
+        }
     }
 }

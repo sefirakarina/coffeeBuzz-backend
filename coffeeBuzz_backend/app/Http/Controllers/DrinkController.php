@@ -8,29 +8,70 @@ use Illuminate\Http\Request;
 
 class DrinkController extends Controller
 {
-    public function showAllDrinks() {
-        return Drink::all();
+    protected $drink;
+
+    public function __construct(Drink $drink)
+    {
+        $this->middleware('auth:api');
+        $this->drink = $drink;
     }
 
-    public function showDrinkById($id) {
-        return Drink::find($id);
+    public function index() {
+        $drink = Drink::all();
+        $array = Array();
+        $array['data'] = $drink;
+        if (count($drink) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Drink not found'], 404);
+        }
     }
 
-    public function deleteDrink($id) {
-        Drink::where('id', $id)->delete();
+    public function show($id) {
+        $drink = Drink::find($id);
+        $array = Array();
+        $array['data'] = $drink;
+        if (count($drink) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Drink not found'], 404);
+        }
     }
 
-    public function addDrink(Request $request) {
-        $cart = new Drink;
-        $cart->name = $request->name;
-        $cart->drink_type = $request->drink_type;
-        $cart->save();
+    public function destroy($id) {
+        $drink = Drink::where('id', $id)->delete();
+        if ($drink != null) {
+            return response()->json($drink, 200);
+        } else {
+            return response()->json(['error' => 'Drink cannot be deleted'], 404);
+        }
     }
 
-    public function updateDrink(Request $request, $id) {
-        $cart = Drink::find($id);
-        $cart->name = $request->input('name');
-        $cart->drink_type = $request->input('drink_type');
-        $cart->save();
+    public function store(Request $request) {
+        $newDrink = [
+            'name' => $request->name,
+            'drink_type' => $request->drink_type,
+        ];
+
+        if ($newDrink != null) {
+            $new = $this->drink->create($newDrink);
+            $array = Array();
+            $array['data'] = $new;
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Drink not added'], 404);
+        }
+    }
+
+    public function update(Request $request, $id) {
+        $drink = Drink::where('id', $request->id)->update([
+            'name' => $request->name,
+            'drink_type' => $request->drink_type,
+        ]);
+        if($drink!=null){
+            return response()->json($drink, 200);
+        } else {
+            return response()->json(['error' => 'Drink not updated'], 404);
+        }
     }
 }

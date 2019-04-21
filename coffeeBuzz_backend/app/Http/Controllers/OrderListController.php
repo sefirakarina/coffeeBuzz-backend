@@ -9,31 +9,72 @@ use Illuminate\Http\Request;
 
 class OrderListController extends Controller
 {
-    public function showAllOrderLists() {
-        return OrderList::all();
+    protected $order_list;
+
+    public function __construct(OrderList $order_list)
+    {
+        $this->middleware('auth:api');
+        $this->order_list = $order_list;
     }
 
-    public function showOrderListById($id) {
-        return OrderList::find($id);
+    public function index() {
+        $order_list = OrderList::all();
+        $array = Array();
+        $array['data'] = $order_list;
+        if (count($order_list) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Order List not found'], 404);
+        }
     }
 
-    public function deleteOrderList($id) {
-        OrderList::where('id', $id)->delete();
+    public function show($id) {
+        $order_list = OrderList::find($id);
+        $array = Array();
+        $array['data'] = $order_list;
+        if (count($order_list) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Order List not found'], 404);
+        }
     }
 
-    public function addOrderList(Request $request) {
-        $cart = new OrderList;
-        $cart->cart_id = $request->cart_id;
-        $cart->item_id = $request->item_id;
-        $cart->qty = $request->qty;
-        $cart->save();
+    public function destroy($id) {
+        $order_list = OrderList::where('id', $id)->delete();
+        if ($order_list != null) {
+            return response()->json($order_list, 200);
+        } else {
+            return response()->json(['error' => 'Order List cannot be deleted'], 404);
+        }
     }
 
-    public function updateOrderList(Request $request, $id) {
-        $cart = OrderList::find($id);
-        $cart->cart_id = $request->input('cart_id');
-        $cart->item_id = $request->input('item_id');
-        $cart->qty = $request->input('qty');
-        $cart->save();
+    public function store(Request $request) {
+        $newOrderList = [
+            'cart_id' => $request->cart_id,
+            'item_id' => $request->item_id,
+            'qty' => $request->qty,
+        ];
+
+        if ($newOrderList != null) {
+            $new = $this->order_list->create($newOrderList);
+            $array = Array();
+            $array['data'] = $new;
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Order List not added'], 404);
+        }
+    }
+
+    public function update(Request $request, $id) {
+        $order_list = OrderList::where('id', $request->id)->update([
+            'cart_id' => $request->cart_id,
+            'item_id' => $request->item_id,
+            'qty' => $request->qty,
+        ]);
+        if($order_list!=null){
+            return response()->json($order_list, 200);
+        } else {
+            return response()->json(['error' => 'Order list not updated'], 404);
+        }
     }
 }

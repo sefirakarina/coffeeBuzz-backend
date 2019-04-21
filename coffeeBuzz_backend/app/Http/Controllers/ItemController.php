@@ -8,31 +8,72 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    public function showAllItems() {
-        return Item::all();
+    protected $item;
+
+    public function __construct(Item $item)
+    {
+        $this->middleware('auth:api');
+        $this->item = $item;
     }
 
-    public function showItemById($id) {
-        return Item::find($id);
+    public function index() {
+        $item = Item::all();
+        $array = Array();
+        $array['data'] = $item;
+        if (count($item) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Item not found'], 404);
+        }
     }
 
-    public function deleteItem($id) {
-        Item::where('id', $id)->delete();
+    public function show($id) {
+        $item =  Item::find($id);
+        $array = Array();
+        $array['data'] = $item;
+        if (count($item) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Item not found'], 404);
+        }
     }
 
-    public function addItem(Request $request) {
-        $cart = new Item;
-        $cart->item_type = $request->item_type;
-        $cart->food_id = $request->food_id;
-        $cart->drink_id = $request->drink_id;
-        $cart->save();
+    public function destroy($id) {
+        $item = Item::where('id', $id)->delete();
+        if ($item != null) {
+            return response()->json($item, 200);
+        } else {
+            return response()->json(['error' => 'Item cannot be deleted'], 404);
+        }
+    }
+
+    public function store(Request $request) {
+        $newItem = [
+            'item_type' => $request->item_type,
+            'food_id' => $request->food_id,
+            'drink_id' => $request->drink_id,
+        ];
+
+        if ($newItem != null) {
+            $new = $this->item->create($newItem);
+            $array = Array();
+            $array['data'] = $new;
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Item not added'], 404);
+        }
     }
 
     public function updateItem(Request $request, $id) {
-        $cart = Item::find($id);
-        $cart->item_type = $request->input('item_type');
-        $cart->food_id = $request->input('food_id');
-        $cart->drink_id = $request->input('drink_id');
-        $cart->save();
+        $item = Item::where('id', $request->id)->update([
+            'item_type' => $request->item_type,
+            'food_id' => $request->food_id,
+            'drink_id' => $request->drink_id,
+        ]);
+        if($item!=null){
+            return response()->json($item, 200);
+        } else {
+            return response()->json(['error' => 'Item not updated'], 404);
+        }
     }
 }

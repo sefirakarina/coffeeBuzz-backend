@@ -7,29 +7,70 @@ use Illuminate\Http\Request;
 
 class FoodController extends Controller
 {
-    public function showAllFoods() {
-        return Food::all();
+    protected $food;
+
+    public function __construct(Food $food)
+    {
+        $this->middleware('auth:api');
+        $this->food = $food;
     }
 
-    public function showFoodById($id) {
-        return Food::find($id);
+    public function index() {
+        $food =  Food::all();
+        $array = Array();
+        $array['data'] = $food;
+        if (count($food) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Food not found'], 404);
+        }
     }
 
-    public function deleteFood($id) {
-        Food::where('id', $id)->delete();
+    public function show($id) {
+        $food = Food::find($id);
+        $array = Array();
+        $array['data'] = $food;
+        if (count($food) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Food not found'], 404);
+        }
     }
 
-    public function addFood(Request $request) {
-        $cart = new Food;
-        $cart->name = $request->name;
-        $cart->qty = $request->qty;
-        $cart->save();
+    public function destroy($id) {
+        $food = Food::where('id', $id)->delete();
+        if ($food != null) {
+            return response()->json($food, 200);
+        } else {
+            return response()->json(['error' => 'Food cannot be deleted'], 404);
+        }
     }
 
-    public function updateFood(Request $request, $id) {
-        $cart = Food::find($id);
-        $cart->name = $request->input('name');
-        $cart->qty = $request->input('qty');
-        $cart->save();
+    public function store(Request $request) {
+        $newFood = [
+            'name' => $request->name,
+            'qty' => $request->qty,
+        ];
+
+        if ($newFood != null) {
+            $new = $this->food->create($newFood);
+            $array = Array();
+            $array['data'] = $new;
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'Food not added'], 404);
+        }
+    }
+
+    public function update(Request $request, $id) {
+        $food = Food::where('id', $request->id)->update([
+            'name' => $request->name,
+            'qty' => $request->qty,
+        ]);
+        if($food!=null){
+            return response()->json($food, 200);
+        } else {
+            return response()->json(['error' => 'Food not updated'], 404);
+        }
     }
 }

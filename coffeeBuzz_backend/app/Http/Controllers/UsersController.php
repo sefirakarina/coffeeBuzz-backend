@@ -7,31 +7,73 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function showAllUsers() {
-        return User::all();
+    protected $user;
+
+    public function __construct(User $user)
+    {
+        $this->middleware('auth:api');
+        $this->user = $user;
     }
 
-    public function showUserById($id) {
-        return User::find($id);
+    public function index() {
+        $user = User::all();
+        $array = Array();
+        $array['data'] = $user;
+        if (count($user) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
     }
 
-    public function deleteUser($id) {
-        User::where('id', $id)->delete();
-    }
-
-    public function addUser(Request $request) {
-        $user = new User;
-        $user->username = $request->username;
-        $user->role = $request->role;
-        $user->password = $request->password;
-        $user->save();
-    }
-
-    public function updateUser (Request $request, $id) {
+    public function show($id) {
         $user = User::find($id);
-        $user->username = $request->input('username');
-        $user->role = $request->input('role');
-        $user->password = Hash::make($request->input('password'));
-        $user->save();
+        $array = Array();
+        $array['data'] = $user;
+        if (count($user) > 0) {
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+    }
+
+    public function destroy($id) {
+        $user = User::where('id', $id)->delete();
+        if ($user != null) {
+            return response()->json($user, 200);
+        } else {
+            return response()->json(['error' => 'User cannot be deleted'], 404);
+        }
+    }
+
+    public function store(Request $request) {
+
+        $newUser = [
+            'username' => $request->username,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ];
+
+        if ($newUser != null) {
+            $new = $this->user->create($newUser);
+            $array = Array();
+            $array['data'] = $new;
+            return response()->json($array, 200);
+        } else {
+            return response()->json(['error' => 'User not added'], 404);
+        }
+    }
+
+    public function update (Request $request, $id) {
+        $user = User::where('id', $request->id)->update([
+            'username' => $request->username,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+        if($user!=null){
+            return response()->json($user, 200);
+        } else {
+            return response()->json(['error' => 'User not updated'], 404);
+        }
     }
 }

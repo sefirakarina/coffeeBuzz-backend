@@ -68,14 +68,10 @@ class CartController extends Controller
 
     public function update(Request $request, $id)
     {
-        $cart = Cart::find($id);
-        $cart->user_id = $request->input('user_id');
-        $cart->save();
-
         $cart = Cart::where('id', $request->id)->update([
             'user_id' => $request->user_id,
         ]);
-        if($cart!=null){
+        if ($cart != null) {
             return response()->json($cart, 200);
         } else {
             return response()->json(['error' => 'Cart not updated'], 404);
