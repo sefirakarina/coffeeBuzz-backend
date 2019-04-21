@@ -21,8 +21,8 @@ class CreateOrderListsTable extends Migration
         });
 
         Schema::table('order_lists', function (Blueprint $table) {
-            $table->foreign('cart_id')->references('id')->on('carts');
-            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('cart_id')->references('id')->on('carts')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('item_id')->references('id')->on('items')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

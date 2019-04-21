@@ -11,7 +11,7 @@ class FoodController extends Controller
 
     public function __construct(Food $food)
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['index']]);
         $this->food = $food;
     }
 

@@ -20,7 +20,7 @@ class CreateOrderedItemsTable extends Migration
         });
 
         Schema::table('ordered_items', function (Blueprint $table) {
-            $table->foreign('cart_id')->references('id')->on('carts');
+            $table->foreign('cart_id')->references('id')->on('carts')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

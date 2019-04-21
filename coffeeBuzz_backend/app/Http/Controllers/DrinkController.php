@@ -12,7 +12,7 @@ class DrinkController extends Controller
 
     public function __construct(Drink $drink)
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['index']]);
         $this->drink = $drink;
     }
 

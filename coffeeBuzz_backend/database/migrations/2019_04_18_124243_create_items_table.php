@@ -21,8 +21,8 @@ class CreateItemsTable extends Migration
         });
 
         Schema::table('items', function (Blueprint $table) {
-            $table->foreign('food_id')->references('id')->on('foods');
-            $table->foreign('drink_id')->references('id')->on('drinks');
+            $table->foreign('food_id')->references('id')->on('foods')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('drink_id')->references('id')->on('drinks')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
