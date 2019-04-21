@@ -31,7 +31,7 @@ class UsersController extends Controller
         $user = User::find($id);
         $user->username = $request->input('username');
         $user->role = $request->input('role');
-        $user->password = $request->input('password');
+        $user->password = Hash::make($request->input('password'));
         $user->save();
     }
 }
