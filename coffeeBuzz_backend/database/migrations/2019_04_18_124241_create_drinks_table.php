@@ -15,8 +15,14 @@ class CreateDrinksTable extends Migration
     {
         Schema::create('drinks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->enum('drink_type', ['S', 'M', 'L']);
+            $table->integer('name_id')->unsigned();
+            $table->integer('size_id')->unsigned();
+            $table->integer(('price'));
+        });
+
+        Schema::table('drinks', function (Blueprint $table) {
+            $table->foreign('size_id')->references('id')->on('drink_sizes');
+            $table->foreign('name_id')->references('id')->on('drink_names');
         });
     }
 
