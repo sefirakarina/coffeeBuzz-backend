@@ -12,11 +12,11 @@ class Drink extends Model
     protected $fillable = ['name', 'size_id', 'name_id'];
 
     public function drinkName(){
-        return $this->hasMany('App\Models\DrinkName', 'id');
+        return $this->hasMany(DrinkName::class,'id', 'name_id');
     }
 
     public function drinkSize(){
-        return $this->hasMany('App\Models\DrinkSize', 'id');
+        return $this->hasMany(DrinkSize::class, 'id', 'size_id');
     }
 
 }

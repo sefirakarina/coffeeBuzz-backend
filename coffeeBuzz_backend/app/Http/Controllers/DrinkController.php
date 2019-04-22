@@ -17,7 +17,7 @@ class DrinkController extends Controller
     }
 
     public function index() {
-        $drink = Drink::all();
+        $drink = Drink::with('drinkName')->with('drinkSize')->get();
         $array = Array();
         $array['data'] = $drink;
         if (count($drink) > 0) {
