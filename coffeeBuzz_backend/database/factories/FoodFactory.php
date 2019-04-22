@@ -11,5 +11,6 @@ $factory->define(Food::class, function (Faker $faker) {
     return [
         'name' =>  $food[rand(0,6)],
         'qty' =>  $faker->numberBetween(0, 100),
+        'price' =>  $faker->numberBetween(5, 15),
     ];
 });

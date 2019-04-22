@@ -22,13 +22,22 @@ Route::group([
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
-    Route::get('foods', 'FoodController@showAllFoods');
-    Route::get('drinks', 'DrinkController@showAllDrinks');
+    Route::get('foods', 'FoodController@index');
+    Route::get('drinks', 'DrinkController@index');
 });
 
 // Do not erase
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    $user = json_decode($request->user(), true);
+    if ($user["role"] == "Manager"){
+        return $request->user();
+    }
+    elseif($user["role"] == "Barista"){
+        return null;
+    }
+    else {
+        return null;
+    }
 });
 
 Route::resource('carts', 'CartController')/*->except(['index'])*/;
