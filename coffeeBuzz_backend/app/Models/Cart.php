@@ -11,7 +11,7 @@ class Cart extends Model
     protected $fillable = ['user_id'];
 
     public function users(){
-        return $this->belongsTo('App\Models\User', 'id');
+        return $this->belongsTo('App\Models\User');
     }
 
     protected $primaryKey = 'id';

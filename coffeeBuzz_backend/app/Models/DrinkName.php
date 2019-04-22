@@ -10,4 +10,8 @@ class DrinkName extends Model
     protected $primaryKey = 'id';
     protected $table = 'drink_names';
     protected $fillable = ['name'];
+
+    public function drinks(){
+        return $this->belongsTo('App\Model\Drinks');
+    }
 }

@@ -11,6 +11,6 @@ class OrderedItem extends Model
     public $timestamps = false;
 
     public function carts(){
-        return $this->belongsTo('App\Models\Cart', 'id');
+        return $this->belongsTo('App\Models\Cart');
     }
 }
