@@ -16,8 +16,8 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->increments('id');
             $table->enum('item_type', ['food', 'drink']);
-            $table->integer('food_id')->unsigned();
-            $table->integer('drink_id')->unsigned();
+            $table->integer('food_id')->unsigned()->nullable(true);
+            $table->integer('drink_id')->unsigned()->nullable(true);
         });
 
         Schema::table('items', function (Blueprint $table) {

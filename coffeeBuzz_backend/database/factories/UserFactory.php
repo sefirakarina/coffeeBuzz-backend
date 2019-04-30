@@ -18,9 +18,12 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $length = 10;
     return [
         'username' => $faker->name,
         'role' => $faker->randomElement(['Manager', 'Barista', 'Customer']),
+        'email' => substr(str_shuffle(str_repeat($pool, 5)), 0, $length) . '@gmail.com',
         'password' => Hash::make("secret"),
         'remember_token' => Str::random(10),
     ];
