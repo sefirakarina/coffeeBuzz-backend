@@ -19,4 +19,8 @@ class Drink extends Model
         return $this->hasMany(DrinkSize::class, 'id', 'size_id');
     }
 
+    public function item(){
+        return $this->belongsTo('App\Model\Item');
+    }
+
 }
