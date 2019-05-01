@@ -50,6 +50,7 @@ class UsersController extends Controller
 
         $newUser = [
             'username' => $request->username,
+            'email' => $request->email,
             'role' => $request->role,
             'password' => Hash::make($request->password),
         ];
@@ -67,6 +68,7 @@ class UsersController extends Controller
     public function update (Request $request, $id) {
         $user = User::where('id', $request->id)->update([
             'username' => $request->username,
+            'email' => $request->email,
             'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);

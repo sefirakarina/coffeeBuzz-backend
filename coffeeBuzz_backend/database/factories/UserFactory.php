@@ -22,7 +22,7 @@ $factory->define(User::class, function (Faker $faker) {
     $length = 10;
     return [
         'username' => $faker->name,
-        'role' => $faker->randomElement(['Manager', 'Barista', 'Customer']),
+        'role_id' => $faker->randomElement([1 , 2, 3]),
         'email' => substr(str_shuffle(str_repeat($pool, 5)), 0, $length) . '@gmail.com',
         'password' => Hash::make("secret"),
         'remember_token' => Str::random(10),

@@ -1,4 +1,4 @@
-<?php
+RolesTableSeeder.php<?php
 
 use App\User;
 use Illuminate\Database\Seeder;
@@ -15,3 +15,6 @@ class UsersTableSeeder extends Seeder
         factory(App\User::class, 50)->create();
     }
 }
+
+
+
