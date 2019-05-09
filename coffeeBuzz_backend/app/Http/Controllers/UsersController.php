@@ -16,7 +16,8 @@ class UsersController extends Controller
         $this->user = $user;
     }
 
-    public function index() {
+    public function index()
+    {
         $user = User::all();
         $array = Array();
         $array['data'] = $user;
@@ -27,7 +28,8 @@ class UsersController extends Controller
         }
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $user = User::find($id);
         $array = Array();
         $array['data'] = $user;
@@ -38,7 +40,8 @@ class UsersController extends Controller
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = User::where('id', $id)->delete();
         if ($user != null) {
             return response()->json($user, 200);
@@ -47,7 +50,8 @@ class UsersController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $newUser = [
             'username' => $request->username,
@@ -66,14 +70,28 @@ class UsersController extends Controller
         }
     }
 
-    public function update (Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $user = User::where('id', $request->id)->update([
             'username' => $request->username,
             'email' => $request->email,
             'role_id' => $request->role,
             'password' => Hash::make($request->password),
         ]);
-        if($user!=null){
+        if ($user != null) {
+            return response()->json($user, 200);
+        } else {
+            return response()->json(['error' => 'User not updated'], 404);
+        }
+    }
+
+    public function adminUpdateUser(Request $request)
+    {
+        $user = User::where('id', $request->id)->update([
+            'username' => $request->username,
+            'email' => $request->email,
+        ]);
+        if ($user != null) {
             return response()->json($user, 200);
         } else {
             return response()->json(['error' => 'User not updated'], 404);

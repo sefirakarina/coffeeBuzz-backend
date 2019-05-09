@@ -19,12 +19,15 @@
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/hamcrest/hamcrest-php" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/jakub-onderka/php-console-color" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/jakub-onderka/php-console-highlighter" />
+      <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/kylekatarnls/laravel-carbon-2" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/laravel/framework" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/laravel/tinker" />
+      <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/lcobucci/jwt" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/league/flysystem" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/mockery/mockery" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/myclabs/deep-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/namshi/jose" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/nesbot/carbon" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/nikic/php-parser" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/nunomaduro/collision" />
@@ -72,13 +75,16 @@
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/polyfill-iconv" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/polyfill-intl-idn" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/polyfill-php56" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/polyfill-php72" />
+      <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/polyfill-util" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/process" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/routing" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/translation" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/symfony/var-dumper" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/theseer/tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/tijsverkoyen/css-to-inline-styles" />
+      <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/tymon/jwt-auth" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/coffeeBuzz_backend/vendor/webmozart/assert" />
     </content>

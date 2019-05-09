@@ -41,6 +41,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('carts', 'CartController')/*->except(['index'])*/;
+Route::patch('admin', 'UsersController@adminUpdateUser');
 Route::resource('foods', 'FoodController');
 Route::resource('drinks', 'DrinkController');
 Route::resource('items', 'ItemController');
