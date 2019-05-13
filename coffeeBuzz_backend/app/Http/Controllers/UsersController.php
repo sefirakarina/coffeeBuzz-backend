@@ -52,7 +52,6 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
-
         $newUser = [
             'username' => $request->username,
             'email' => $request->email,
@@ -61,10 +60,14 @@ class UsersController extends Controller
         ];
 
         if ($newUser != null) {
-            $new = $this->user->create($newUser);
-            $array = Array();
-            $array['data'] = $new;
-            return response()->json($array, 200);
+            try{
+                $new = $this->user->create($newUser);
+                $array = Array();
+                $array['data'] = $new;
+                return response()->json($array, 200);
+            }catch (\Exception $e){
+                return response()->json(['error' => 'Username duplication'], 422);
+            }
         } else {
             return response()->json(['error' => 'User not added'], 404);
         }

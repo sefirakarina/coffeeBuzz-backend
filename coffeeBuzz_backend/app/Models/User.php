@@ -50,4 +50,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public static function users(){
+        return User::all();
+    }
 }
