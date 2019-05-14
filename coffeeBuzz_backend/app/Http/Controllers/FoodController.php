@@ -50,6 +50,7 @@ class FoodController extends Controller
         $newFood = [
             'name' => $request->name,
             'qty' => $request->qty,
+            'price' => $request->price,
         ];
 
         if ($newFood != null) {
@@ -66,6 +67,7 @@ class FoodController extends Controller
         $food = Food::where('id', $request->id)->update([
             'name' => $request->name,
             'qty' => $request->qty,
+            'price' => $request->price,
         ]);
         if($food!=null){
             return response()->json($food, 200);

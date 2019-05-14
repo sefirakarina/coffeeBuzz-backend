@@ -9,7 +9,7 @@ class Drink extends Model
     public $timestamps = false;
     protected $primaryKey = 'id';
     protected $table = 'drinks';
-    protected $fillable = ['name', 'size_id', 'name_id'];
+    protected $fillable = ['price', 'size_id', 'name_id'];
 
     public function drinkName(){
         return $this->hasMany(DrinkName::class,'id', 'name_id');
@@ -21,6 +21,10 @@ class Drink extends Model
 
     public function item(){
         return $this->belongsTo('App\Model\Item');
+    }
+
+    public static function drinks(){
+        return Drink::all();
     }
 
 }
