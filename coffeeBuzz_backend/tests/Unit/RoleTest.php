@@ -23,7 +23,7 @@ class RoleTest extends TestCase
             'id' => 3,
             'role' => 'customer'
         ]);
-//        dd($response->toArray());
+
         $this->assertEquals(
             [
                 "id" => 3,

@@ -45,7 +45,7 @@ class UserTest extends TestCase
 
         $users = User::users();
         $this->assertCount(2, $users);
-//        dd($users->toArray());
+
         $this->assertEquals([
             [
                 "id" => 1,
