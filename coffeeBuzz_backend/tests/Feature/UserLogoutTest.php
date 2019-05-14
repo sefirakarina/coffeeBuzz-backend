@@ -11,7 +11,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UserLoginTest extends TestCase
+class UserRegisterTest extends TestCase
 {
     use DatabaseTransactions;
     /**
@@ -23,8 +23,8 @@ class UserLoginTest extends TestCase
     {
 
         factory(Role::class)->create([
-            'id' => 3,
-            'role' => 'customer'
+        'id' => 3,
+        'role' => 'customer'
         ]);
 
         factory(User::class)->create([
@@ -58,7 +58,7 @@ class UserLoginTest extends TestCase
             'password' => Hash::make('secret'),
         ]);
 
-        //customer login test
+        //customer logout test
         $response = $this->call('POST', 'api/auth/login',
             [
                 'username' => 'Someone',
@@ -68,33 +68,35 @@ class UserLoginTest extends TestCase
         //dd($response->access_token);
         $response->assertStatus(200);
 
-        $response = $this->call('POST', 'api/auth/login',
+        $array = json_decode($response->getContent());
+
+        $response = $this->call('POST', 'api/auth/logout',
             [
-                'username' => 'Someone',
-                'password' => Hash::make('wrongpassword'),
+                'token' => $array->access_token,
             ]
         );
-        $response->assertStatus(401);
+        $response->assertStatus(200);
 
-        //manager login test
+        //manager logout test
         $response = $this->call('POST', 'api/auth/login',
             [
                 'username' => 'Someone2',
                 'password' => 'secret',
             ]
         );
+
         $response->assertStatus(200);
 
+        $array = json_decode($response->getContent());
 
-        $response = $this->call('POST', 'api/auth/login',
+        $response = $this->call('POST', 'api/auth/logout',
             [
-                'username' => 'Someone2',
-                'password' => Hash::make('wrongpassword'),
+                'token' => $array->access_token,
             ]
         );
-        $response->assertStatus(401);
+        $response->assertStatus(200);
 
-        //barista login test
+        //barista logout test
         $response = $this->call('POST', 'api/auth/login',
             [
                 'username' => 'Someone3',
@@ -103,24 +105,14 @@ class UserLoginTest extends TestCase
         );
         $response->assertStatus(200);
 
-//        $array = json_decode($response->getContent());
-//        var_dump($array->access_token);
+        $array = json_decode($response->getContent());
 
-        $response = $this->call('POST', 'api/auth/login',
+        $response = $this->call('POST', 'api/auth/logout',
             [
-                'username' => 'Someone3',
-                'password' => Hash::make('wrongpassword'),
+                'token' => $array->access_token,
             ]
         );
-        $response->assertStatus(401);
+        $response->assertStatus(200);
 
-        //no username and pasword filled
-        $response = $this->call('POST', 'api/auth/login',
-            [
-                'username' => '',
-                'password' => Hash::make(''),
-            ]
-        );
-        $response->assertStatus(401);
     }
 }
