@@ -53,7 +53,9 @@ class OrderedItemController extends Controller
     public function store(Request $request)
     {
         $newOrderedItem = [
-            'cart_id' => $request->cart_id,
+            'user_id' => $request->user_id,
+            'item_id' => $request->item_id,
+            'qty' => $request->qty,
         ];
 
         if ($newOrderedItem != null) {
@@ -69,7 +71,9 @@ class OrderedItemController extends Controller
     public function update(Request $request, $id)
     {
         $ordered_item = OrderedItem::where('id', $request->id)->update([
-            'cart_id' => $request->cart_id,
+            'user_id' => $request->user_id,
+            'item_id' => $request->item_id,
+            'qty' => $request->qty,
         ]);
         if ($ordered_item != null) {
             return response()->json($ordered_item, 200);

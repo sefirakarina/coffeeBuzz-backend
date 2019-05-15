@@ -15,12 +15,14 @@ class CreateOrderedItemsTable extends Migration
     {
         Schema::create('ordered_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('cart_id')->unsigned();
-            $table->timestamp('created_at');
+            $table->integer('user_id')->unsigned();
+            $table->integer('item_id')->unsigned();
+            $table->integer('qty');
         });
 
         Schema::table('ordered_items', function (Blueprint $table) {
-            $table->foreign('cart_id')->references('id')->on('carts')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('item_id')->references('id')->on('items')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

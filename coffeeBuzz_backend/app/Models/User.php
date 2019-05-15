@@ -54,4 +54,12 @@ class User extends Authenticatable implements JWTSubject
     public static function users(){
         return User::all();
     }
+
+    public function orderLists(){
+        return $this->hasMany('App\Model\OrderList', 'id');
+    }
+
+    public function orderedItems(){
+        return $this->hasMany('App\Model\OrderedItem', 'id');
+    }
 }

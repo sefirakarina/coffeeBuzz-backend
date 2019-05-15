@@ -19,4 +19,8 @@ class Item extends Model
     }
 
     protected $primaryKey = 'id';
+
+    public static function items(){
+        return Item::all();
+    }
 }

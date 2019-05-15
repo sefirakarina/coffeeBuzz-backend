@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Order_list;
-
 use App\OrderList;
 use Illuminate\Http\Request;
 
@@ -50,7 +48,7 @@ class OrderListController extends Controller
 
     public function store(Request $request) {
         $newOrderList = [
-            'cart_id' => $request->cart_id,
+            'user_id' => $request->user_id,
             'item_id' => $request->item_id,
             'qty' => $request->qty,
         ];
@@ -67,7 +65,7 @@ class OrderListController extends Controller
 
     public function update(Request $request, $id) {
         $order_list = OrderList::where('id', $request->id)->update([
-            'cart_id' => $request->cart_id,
+            'user_id' => $request->user_id,
             'item_id' => $request->item_id,
             'qty' => $request->qty,
         ]);
@@ -75,6 +73,15 @@ class OrderListController extends Controller
             return response()->json($order_list, 200);
         } else {
             return response()->json(['error' => 'Order list not updated'], 404);
+        }
+    }
+
+    public function getAllUserOrderListItem($user_id){
+        $ordered_item = OrderList::where('user_id', $user_id)->get();
+        if ($ordered_item != null) {
+            return response()->json($ordered_item, 200);
+        } else {
+            return response()->json(['error' => 'Ordered item not updated'], 404);
         }
     }
 }
