@@ -3,11 +3,14 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class OrderListTest extends TestCase
 {
+    use DatabaseTransactions;
     /**
      * A basic unit test example.
      *

@@ -65,7 +65,6 @@ class UserLoginTest extends TestCase
                 'password' => 'secret',
             ]
         );
-        //dd($response->access_token);
         $response->assertStatus(200);
 
         $response = $this->call('POST', 'api/auth/login',
