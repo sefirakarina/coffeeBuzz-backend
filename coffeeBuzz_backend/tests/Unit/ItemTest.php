@@ -6,6 +6,7 @@ use App\Drink;
 use App\DrinkName;
 use App\DrinkSize;
 use App\Food;
+use App\Item;
 use App\Role;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -127,6 +128,4 @@ class ItemTest extends TestCase
         $item = Item::items();
         $this->assertCount(1, $item);
     }
-
-
 }
