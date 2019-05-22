@@ -71,7 +71,7 @@ class FoodListTest extends TestCase
         $login->assertStatus(200);
 
         // initial food
-        $response = $this->call('POST', 'api/foods/' . $response->json("id"),
+        $response = $this->call('POST', 'api/foods',
             [
                 'name' => "bread",
                 'qty' => 5,
