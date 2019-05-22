@@ -6,6 +6,7 @@ use App\Drink;
 use App\DrinkName;
 use App\DrinkSize;
 use App\Food;
+use App\OrderedItem;
 use App\Role;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class OrderedItemTest extends TestCase
 {
     use DatabaseTransactions;
+
     /**
      * A basic unit test example.
      *
@@ -50,13 +52,13 @@ class OrderedItemTest extends TestCase
         ]);
 
         factory(DrinkName::class)->create([
-            'id' =>  1,
-            'name' =>  'cappucino',
+            'id' => 1,
+            'name' => 'cappucino',
         ]);
 
         factory(DrinkName::class)->create([
-            'id' =>  2,
-            'name' =>  'coffee',
+            'id' => 2,
+            'name' => 'coffee',
         ]);
 
         factory(DrinkSize::class)->create([
@@ -92,20 +94,19 @@ class OrderedItemTest extends TestCase
 
         factory(Food::class)->create(
             [
-                'id' =>1,
-                'name' =>  'Burritos',
-                'qty' =>  5,
+                'id' => 1,
+                'name' => 'Burritos',
+                'qty' => 5,
                 'price' => 5,
             ],
             [
-                'id' =>2,
-                'name' =>  'Sandwich',
-                'qty' =>  7,
+                'id' => 2,
+                'name' => 'Sandwich',
+                'qty' => 7,
                 'price' => 5,
             ]
         );
 
-        // Customer Login
         $login = $this->call('POST', 'api/auth/login',
             [
                 'username' => 'sue',
@@ -115,14 +116,12 @@ class OrderedItemTest extends TestCase
         $login->assertStatus(200);
 
 
-
-        // Customer select a menu and create an item to be added to the order list
         $response = $this->call('POST', 'api/items',
             [
                 'item_type' => 'food',
                 'food_id' => 1,
             ],
-            $this->transformHeadersToServerVars([ 'Authorization' => $login->json("access_token")])
+            $this->transformHeadersToServerVars(['Authorization' => $login->json("access_token")])
         );
         $response->assertStatus(200);
 
@@ -130,16 +129,14 @@ class OrderedItemTest extends TestCase
 
         $item_id = $response->data->id;
 
-        // Customer gets its own identity again
         $response = $this->call('POST', 'api/auth/me',
-            $this->transformHeadersToServerVars([ 'Authorization' => $login->json("access_token")])
+            $this->transformHeadersToServerVars(['Authorization' => $login->json("access_token")])
         );
         $response->assertStatus(200);
 
         $user_id = $response->json('id');
 
 
-        // Customer input the item that has been created and input its identity to the order list
         $response = $this->call('POST', 'api/order_lists',
             [
                 'id' => 2,
@@ -147,7 +144,7 @@ class OrderedItemTest extends TestCase
                 'item_id' => $item_id,
                 'qty' => 1,
             ],
-            $this->transformHeadersToServerVars([ 'Authorization' => $response->json("access_token")])
+            $this->transformHeadersToServerVars(['Authorization' => $response->json("access_token")])
         );
 
 
@@ -157,12 +154,24 @@ class OrderedItemTest extends TestCase
                 'item_id' => $item_id,
                 'qty' => 1,
             ],
-            $this->transformHeadersToServerVars([ 'Authorization' => $response->json("access_token")])
+            $this->transformHeadersToServerVars(['Authorization' => $response->json("access_token")])
         );
-
 
         $orderedItem = OrderedItem::orderedItems();
         $this->assertCount(1, $orderedItem);
+
+        $json_content = json_decode($response->getContent());
+        $ordered_item_id = $json_content->data->id;
+        $ordered_item_item_id = $json_content->data->item_id;
+
+        $this->assertEquals([
+            [
+                "id" => $ordered_item_id,
+                "user_id" => 1,
+                "item_id" => $ordered_item_item_id,
+                "qty" => 1
+            ]
+        ], $orderedItem->toArray());
     }
 
 }

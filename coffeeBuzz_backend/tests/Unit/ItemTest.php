@@ -14,9 +14,6 @@ use Illuminate\Support\Str;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
 class ItemTest extends TestCase
 {
     use DatabaseTransactions;
@@ -106,7 +103,6 @@ class ItemTest extends TestCase
             ]
         );
 
-        // Customer Login
         $login = $this->call('POST', 'api/auth/login',
             [
                 'username' => 'sue',
@@ -115,7 +111,6 @@ class ItemTest extends TestCase
         );
         $login->assertStatus(200);
 
-        // Customer select a menu and create an item to be added to the order list
         $response = $this->call('POST', 'api/items',
             [
                 'item_type' => 'food',
@@ -127,5 +122,17 @@ class ItemTest extends TestCase
 
         $item = Item::items();
         $this->assertCount(1, $item);
+
+        $json_content = json_decode($response->getContent());
+        $item_id = $json_content->data->id;
+
+        $this->assertEquals([
+            [
+                "id" => $item_id,
+                "item_type" => "food",
+                "food_id" => 1,
+                "drink_id" => null
+            ]
+        ], $item->toArray());
     }
 }

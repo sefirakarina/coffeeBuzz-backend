@@ -26,5 +26,12 @@ class FoodTest extends TestCase
 
         $foods = Food::foods();
         $this->assertCount(1, $foods);
+
+        $this->assertEquals([
+            "id" => $foods[0]['id'],
+            'name' =>  'Burritos',
+            'qty' =>  5,
+            'price' => 5,
+        ], $foods->toArray()[0]);
     }
 }

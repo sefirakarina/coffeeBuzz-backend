@@ -39,5 +39,12 @@ class DrinkTest extends TestCase
 
         $drinks = Drink::drinks();
         $this->assertCount(1, $drinks);
+
+        $this->assertEquals([
+            "id" => $drinks[0]['id'],
+            'name_id' =>  1,
+            'size_id' =>  1,
+            'price' => 5,
+        ], $drinks->toArray()[0]);
     }
 }

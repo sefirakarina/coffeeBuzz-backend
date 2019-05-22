@@ -6,6 +6,7 @@ use App\Drink;
 use App\DrinkName;
 use App\DrinkSize;
 use App\Food;
+use App\OrderList;
 use App\Role;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -105,7 +106,6 @@ class OrderListTest extends TestCase
             ]
         );
 
-        // Customer Login
         $login = $this->call('POST', 'api/auth/login',
             [
                 'username' => 'sue',
@@ -116,7 +116,6 @@ class OrderListTest extends TestCase
 
 
 
-        // Customer select a menu and create an item to be added to the order list
         $response = $this->call('POST', 'api/items',
             [
                 'item_type' => 'food',
@@ -130,7 +129,6 @@ class OrderListTest extends TestCase
 
         $item_id = $response->data->id;
 
-        // Customer gets its own identity again
         $response = $this->call('POST', 'api/auth/me',
             $this->transformHeadersToServerVars([ 'Authorization' => $login->json("access_token")])
         );
@@ -139,10 +137,8 @@ class OrderListTest extends TestCase
         $user_id = $response->json('id');
 
 
-        // Customer input the item that has been created and input its identity to the order list
         $response = $this->call('POST', 'api/order_lists',
             [
-                'id' => 2,
                 'user_id' => $user_id,
                 'item_id' => $item_id,
                 'qty' => 1,
@@ -153,6 +149,18 @@ class OrderListTest extends TestCase
 
         $orderList = OrderList::orderLists();
         $this->assertCount(1, $orderList);
+
+        $json_content = json_decode($response->getContent());
+        $orderedListId = $json_content->data->id;
+
+        $this->assertEquals([
+            [
+                "id" => $orderedListId,
+                "user_id" => $user_id,
+                "item_id" => $item_id,
+                "qty" => 1
+            ]
+        ], $orderList->toArray());
     }
 
 
