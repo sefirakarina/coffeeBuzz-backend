@@ -57,6 +57,13 @@ class DrinkListTest extends TestCase
             'password' => Hash::make('secret'),
         ]);
 
+        $response = $this->call('POST', 'api/auth/login',
+            [
+                'username' => 'Someone',
+                'password' => 'secret',
+            ]
+        );
+        $response->assertStatus(200);
 
         $response = $this->call('GET', 'api/auth/drinks',
             $this->transformHeadersToServerVars([ 'Authorization' => $response->json("access_token")])

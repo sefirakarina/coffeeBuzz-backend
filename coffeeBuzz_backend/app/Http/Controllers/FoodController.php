@@ -15,8 +15,9 @@ class FoodController extends Controller
         $this->food = $food;
     }
 
-    public function index() {
-        $food =  Food::all();
+    public function index()
+    {
+        $food = Food::all();
         $array = Array();
         $array['data'] = $food;
         if (count($food) > 0) {
@@ -26,18 +27,20 @@ class FoodController extends Controller
         }
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $food = Food::find($id);
         $array = Array();
         $array['data'] = $food;
-        if (count($food) > 0) {
+        if (sizeof($array) > 0) {
             return response()->json($array, 200);
         } else {
             return response()->json(['error' => 'Food not found'], 404);
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $food = Food::where('id', $id)->delete();
         if ($food != null) {
             return response()->json($food, 200);
@@ -46,7 +49,8 @@ class FoodController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $newFood = [
             'name' => $request->name,
             'qty' => $request->qty,
@@ -63,14 +67,15 @@ class FoodController extends Controller
         }
     }
 
-    public function update(Request $request, $id) {
-        $food = Food::where('id', $id)->update([
+    public function update(Request $request, $food)
+    {
+        $new_food = Food::where('id', $food)->update([
             'name' => $request->name,
             'qty' => $request->qty,
             'price' => $request->price,
         ]);
-        if($food!=null){
-            return response()->json($food, 200);
+        if ($new_food != null) {
+            return response()->json($new_food, 200);
         } else {
             return response()->json(['error' => 'Food not updated'], 404);
         }

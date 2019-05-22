@@ -29,13 +29,11 @@ Route::group([
 // Do not erase
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = json_decode($request->user(), true);
-    if ($user["role"] == "Manager"){
+    if ($user["role"] == "Manager") {
         return $request->user();
-    }
-    elseif($user["role"] == "Barista"){
+    } elseif ($user["role"] == "Barista") {
         return null;
-    }
-    else {
+    } else {
         return null;
     }
 });

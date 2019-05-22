@@ -16,29 +16,32 @@ class DrinkController extends Controller
         $this->drink = $drink;
     }
 
-    public function index() {
+    public function index()
+    {
         $drink = Drink::with('drinkName')->with('drinkSize')->get();
         $array = Array();
         $array['data'] = $drink;
-        if (count($drink) > 0) {
+        if (sizeof($array) > 0) {
             return response()->json($array, 200);
         } else {
             return response()->json(['error' => 'Drink not found'], 404);
         }
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $drink = Drink::find($id);
         $array = Array();
         $array['data'] = $drink;
-        if (count($drink) > 0) {
+        if (count($array) > 0) {
             return response()->json($array, 200);
         } else {
             return response()->json(['error' => 'Drink not found'], 404);
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $drink = Drink::where('id', $id)->delete();
         if ($drink != null) {
             return response()->json($drink, 200);
@@ -47,10 +50,12 @@ class DrinkController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $newDrink = [
-            'name' => $request->name,
-            'drink_type' => $request->drink_type,
+            'price' => $request->price,
+            'size_id' => $request->sizeId,
+            'name_id' => $request->nameId
         ];
 
         if ($newDrink != null) {
@@ -63,12 +68,14 @@ class DrinkController extends Controller
         }
     }
 
-    public function update(Request $request, $id) {
-        $drink = Drink::where('id', $request->id)->update([
-            'name' => $request->name,
-            'drink_type' => $request->drink_type,
+    public function update(Request $request, $id)
+    {
+        $drink = Drink::where('id', $id)->update([
+            'price' => $request->price,
+            'size_id' => $request->sizeId,
+            'name_id' => $request->nameId
         ]);
-        if($drink!=null){
+        if ($drink != null) {
             return response()->json($drink, 200);
         } else {
             return response()->json(['error' => 'Drink not updated'], 404);

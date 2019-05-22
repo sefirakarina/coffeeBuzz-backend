@@ -21,7 +21,7 @@ class UsersController extends Controller
         $user = User::all();
         $array = Array();
         $array['data'] = $user;
-        if (count($user) > 0) {
+        if (count($array) > 0) {
             return response()->json($array, 200);
         } else {
             return response()->json(['error' => 'User not found'], 404);
@@ -33,7 +33,7 @@ class UsersController extends Controller
         $user = User::find($id);
         $array = Array();
         $array['data'] = $user;
-        if (count($user) > 0) {
+        if (count($array) > 0) {
             return response()->json($array, 200);
         } else {
             return response()->json(['error' => 'User not found'], 404);

@@ -14,6 +14,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class AddStaffTest extends TestCase
 {
     use DatabaseTransactions;
+
     /**
      * A basic feature test example.
      *
@@ -38,16 +39,16 @@ class AddStaffTest extends TestCase
             'password' => Hash::make('secret'),
         ]);
 
-        $response = $this->call('POST', 'api/auth/login',
+        $login = $this->call('POST', 'api/auth/login',
             [
                 'username' => 'manager',
                 'password' => 'secret',
             ]
         );
-        $response->assertStatus(200);
+        $login->assertStatus(200);
 
         $response = $this->call('POST', 'api/auth/me',
-            $this->transformHeadersToServerVars([ 'Authorization' => $response->json("access_token")])
+            $this->transformHeadersToServerVars(['Authorization' => $login->json("access_token")])
         );
         $response->assertStatus(200);
 
@@ -61,24 +62,33 @@ class AddStaffTest extends TestCase
         );
         $response->assertStatus(200);
 
-//        $response = $this->call('PUT', 'api/users/'.$response->json("id"),
-//            [
-//                'username' => $response->json('EditedStaffName'),
-//                'email' => $response->json('email@email.com'),
-//                'role' => $response->json(2),
-//                'password' => Hash::make('secret'),
-//            ]
-//        );
-//        $response->assertStatus(200);
-//
-//        $response = $this->call('PUT', 'api/users/'.$response->json("id"),
-//            [
-//                'username' => $response->json(''),
-//                'email' => $response->json('email@email.com'),
-//                'role' => $response->json(2),
-//                'password' => Hash::make('secret'),
-//            ]
-//        );
-//        $response->assertStatus(404);
+        $update = $this->call('PATCH', 'api/admin',
+            [
+                'id' => json_decode($response->getContent())->data->id,
+                'username' => 'somestaff',
+                'email' => 'somestaff@gmail.com',
+            ]);
+        $update->assertStatus(200);
+
+        // get updated drink to compare the expected value
+        $updated_staff = $this->call('GET', 'api/users/' . json_decode($response->getContent())->data->id,
+            $this->transformHeadersToServerVars(['Authorization' => $login->json("access_token")]));
+        $expected = json_decode($updated_staff->getContent());
+
+        // expected value comparison
+        $this->assertEquals([
+            "id" => json_decode($response->getContent())->data->id,
+            "username" => 'somestaff',
+            "role_id" => 2,
+            "email" => 'somestaff@gmail.com',
+        ], (array)$expected->data);
+
+        // delete the staff while the admin remain
+        $response = $this->call('DELETE', 'api/users/' . json_decode($response->getContent())->data->id,
+            $this->transformHeadersToServerVars(['Authorization' => $login->json("access_token")])
+        );
+        $user = User::users();
+        $this->assertCount(1, $user);
+        $response->assertStatus(200);
     }
 }
