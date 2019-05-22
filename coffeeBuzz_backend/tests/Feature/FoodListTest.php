@@ -80,14 +80,14 @@ class FoodListTest extends TestCase
         $second_item_id = json_decode($response->getContent())->data->id;
 
 
-//        $response = $this->call('PUT', 'api/foods/'.$second_item_id,
-//            [
-//                'name' => 'pizza',
-//                'qty' => 5,
-//                'price' => 3,
-//            ]
-//        );
-//        $response->assertStatus(200);
+        $response = $this->call('PUT', 'api/foods/'.$second_item_id,
+            [
+                'name' => 'pizza',
+                'qty' => 5,
+                'price' => 3,
+            ]
+        );
+        $response->assertStatus(200);
 
         $response = $this->call('DELETE', 'api/foods/'.$second_item_id,
             $this->transformHeadersToServerVars([ 'Authorization' => $response->json("access_token")])

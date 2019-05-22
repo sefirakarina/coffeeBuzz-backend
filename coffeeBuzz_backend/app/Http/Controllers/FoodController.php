@@ -64,7 +64,7 @@ class FoodController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $food = Food::where('id', $request->id)->update([
+        $food = Food::where('id', $id)->update([
             'name' => $request->name,
             'qty' => $request->qty,
             'price' => $request->price,
